@@ -1,0 +1,25 @@
+{% extends "char_roster/base.html" %}
+{% block content %}
+    <h1 class="mb-3">Agents of {{ view.kwargs.name }} </h1>
+    {% for agent in agents %}
+    <article class="media content-section">
+      <div class="media-body">
+        {% if agent.player == user or agent.famous == True%}
+        <div class="article-metadata">
+          <a class="mr-2" href="{% url 'user-agents' agent.player.username %}">{{ agent.player.username }}</a>
+          <small class="text-muted"></small>
+        </div>
+        {% endif %}
+        <h2><a class="article-title" href="{% url 'agent-detail' agent.id %}">{{ agent.name }}</a></h2>
+        <p class="article-content">Hit Points: {{ agent.curr_hp }} / {{agent.max_hp}}</p>
+        <p class="article-content">Current location: {{ agent.curr_loc }}</p>
+        {% if agent.player == user or agent.famous == True%}
+          <p class="article-content">Skills: A = {{ agent.attack_power }}, S = {{agent.steal_power}}, W = {{agent.work_power}}</p>
+        {% endif %}
+        {% if agent.player == user or agent.fame >= 5 %}
+          <p class="article-content">Money/Fame: {{ agent.money }} / {{ agent.fame }}</p>
+        {% endif %}
+      </div>
+    </article>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,50 @@
+{% extends "char_roster/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        {% if object.player == user or object.famous == True%}
+            <img class="rounded-circle article-img" src="{{ object.player.profile.image.url }}">
+        {% endif%}
+        <div class="media-body">
+            {% if object.player == user or object.famous == True%}
+                <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'user-agents' object.player.username %}">{{ object.player }}</a>
+                </div>
+            {% endif %}
+            {% if object.player == user %}
+            <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-update' object.id %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'agent-delete' object.id %}">Delete</a>
+            </div>
+            {%endif%}
+            <h2 class="article-title">{{ object.name }}</h2>
+            <p class="article-content">Team: <a class="mr-1" href="{% url 'team-agents' object.team.name %}">{{ object.team }}</a></p>
+            <p class="article-content">Hit Points: {{ object.curr_hp }} / {{object.max_hp}}</p>
+            <p class="article-content">Current location: {{ object.curr_loc }} (A = {{ object.curr_loc.attack_bonus }}, S = {{object.curr_loc.steal_bonus}}, W = {{object.curr_loc.work_bonus}}, H = {{object.curr_loc.heal_bonus}}, C = {{object.curr_loc.cover_bonus}})</p>
+            {% if object.player == user or object.famous == True%}
+                <p class="article-content">Skills: A = {{ object.attack_power }}, S = {{object.steal_power}}, W = {{object.work_power}}</p>
+            {% endif %}
+            {% if object.player == user or object.fame >= 5 %}
+                <p class="article-content">Money/Fame: {{ object.money }} / {{ object.fame }}</p>
+            {% endif %}
+            {% if object.player == user %}
+                <p class="article-content">Agents in this city:</p>
+                {% for agent in agents %}
+                <div>
+                    <a class="mr-1" href="{% url 'agent-detail' agent.id %}" >{{agent.name}}, {{agent.team}}</a>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if object.player == user %}
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-attack' object.id %}">Attack</a>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-steal' object.id %}">Steal</a>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-work' object.id %}">Work</a>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-heal' object.id %}">Heal</a>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-cover' object.id %}">Cover</a>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-travel' object.id %}">Move</a>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'agent-buy_point' object.id %}">Buy point</a>
+                </div>
+            {% endif %}
+        </div>
+    </article>
+{% endblock content %}

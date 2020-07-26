@@ -1,0 +1,17 @@
+{% extends "char_roster/base.html" %}
+{% block content %}
+    {% for agent in agents %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ agent.player.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ agent.player }}</a>
+            </div>
+            <h2><a class="article-title" href="{% url 'agent-detail' agent.id %}">{{ agent.name }}, {{agent.team}}</a></h2>
+            <p class="article-content">Hit Points: {{ agent.curr_hp }} / {{agent.max_hp}}</p>
+            <p class="article-content">Current location: {{ agent.curr_loc }}</p>
+            <p class="article-content">Money/Fame: {{ agent.money }} / {{ agent.fame }}</p>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
